@@ -11,11 +11,13 @@ class Solution
     {
         Queue<string> queue = new Queue<string>();
         string inputs;
+        Console.WriteLine("Enter commands Enqueue(item) or Process(), separated by ';' or ',' (Ctrl+C to exit):");
+
         while ((inputs = Console.ReadLine()) != null)
         {
-            if (inputs.Contains(" "))
+            if (inputs.Contains(";"))
             {
-                String[] inputsArray = inputs.Split(' ');
+                String[] inputsArray = inputs.Split(';');
                 foreach (string input in inputsArray)
                 {
                     QueueManager(queue, input);
@@ -39,7 +41,8 @@ class Solution
             string item = input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1);
             queue.Enqueue(item);
             Console.WriteLine($"Queued {item}");
-        } else if (input.Contains("Process"))
+        } 
+        else if (input.Contains("Process"))
         {
             if (queue.Count > 0)
             {

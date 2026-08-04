@@ -11,11 +11,12 @@ class Solution
     {
         Stack<string> stack = new Stack<string>();
         string inputs;
+        Console.WriteLine("Enter commands Type(item) or Undo(), separated by ';' or ',' (Ctrl+C to exit):");
         while ((inputs = Console.ReadLine()) != null)
         {
-            if (inputs.Contains(" "))
+            if (inputs.Contains(";"))
             {
-                String[] inputsArray = inputs.Split(' ');
+                String[] inputsArray = inputs.Split(';');
                 foreach (string input in inputsArray)
                 {
                     StackManager(stack, input);
