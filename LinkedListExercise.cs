@@ -9,7 +9,7 @@ class Solution
 {
     static void Main(string[] args)
     {
-        LinkedList<string> linkedList = new LinkedList<string>();
+        LinkedList<Int32> linkedList = new LinkedList<Int32>();
         string inputs;
         Console.WriteLine("Enter commands Append(item) or Print(), separated by ';' or ',' (Ctrl+C to exit):");
         while ((inputs = Console.ReadLine()) != null)
@@ -33,20 +33,27 @@ class Solution
         } 
     }
 
-    public static void LinkedListManager(LinkedList<string> linkedList, string input)
+    public static void LinkedListManager(LinkedList<Int32> linkedList, string input)
     {
         if (input.Contains("Append("))
         {
-            string item = input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1);
-            linkedList.AddLast(item);
-            Console.WriteLine($"Appended {item}");
+            try
+            {
+                int item = int.Parse(input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1));
+                linkedList.AddLast(item);
+                Console.WriteLine($"Appended {item}");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid input format. Please enter a valid integer.");
+            }
         } else if (input.Contains("Print"))
         {
             if (linkedList.Count > 0)
             {
                 
                 Console.Write($"Sequence {linkedList.First.Value}");
-                LinkedListNode<string> currentNode = linkedList.First;
+                LinkedListNode<Int32> currentNode = linkedList.First;
                 currentNode =currentNode.Next;
                 while (currentNode != null)
                 {
