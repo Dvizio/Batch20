@@ -23,49 +23,86 @@
 // }
 namespace ConsoleApp1;
 
-public class Asset
+// public class Asset
+// {
+//     public string Name = string.Empty; // Fixed CS8618 by providing a default value
+
+//     static Asset()
+//     {
+//         // Static constructor
+//         Console.WriteLine("im from asset");
+//     }
+
+//     public virtual decimal NetValue { get; }
+// }
+
+// public class Stock : Asset
+// {
+
+//     static Stock()
+//     {
+//         Console.WriteLine("Im from Stock");
+//         // Console.WriteLine(Stock.SharesOwned);
+//         // Console.WriteLine(Stock.CurrentPrice);
+//     }
+
+//     public long SharesOwned {get; set;}
+//     public decimal CurrentPrice {get; set;}
+    
+//     public Stock(string name,long sharesOwned, decimal currentPrice)
+//     {
+//         Name = name;
+//         SharesOwned = sharesOwned;
+//         CurrentPrice = currentPrice;
+//     }
+ 
+//     public override decimal NetValue => CurrentPrice * SharesOwned;
+// }
+
+// class Program
+// {
+//     static void Main(string[] args)
+//     {
+//         Asset asset = new Stock("AAPL", 2, 2);
+//         // Stock asset2 = new Stock("GOOGL", 10000L, 200.00m);
+//         // Console.WriteLine($"Asset Name: {asset2.Name}, Net Value: {asset2.NetValue}");
+//         Console.WriteLine($"Asset Name: {asset.Name}, Net Value: {asset.NetValue}");
+//     }
+// }
+
+interface IAsset
 {
-    public string Name = string.Empty; // Fixed CS8618 by providing a default value
-
-    static Asset()
-    {
-        // Static constructor
-        Console.WriteLine("im from asset");
-    }
-
-    public virtual decimal NetValue { get; }
+    string Name { get; set; }
+    decimal NetValue { get; }
+    void DisplayInfo(string james);
 }
 
-public class Stock : Asset
+class Stock : IAsset
 {
+    public string Name { get; set; }
+    public long SharesOwned { get; set; }
+    public decimal CurrentPrice { get; set; }
 
-    static Stock()
-    {
-        Console.WriteLine("Im from Stock");
-        // Console.WriteLine(Stock.SharesOwned);
-        // Console.WriteLine(Stock.CurrentPrice);
-    }
-
-    public long SharesOwned {get; set;}
-    public decimal CurrentPrice {get; set;}
-    
-    public Stock(string name,long sharesOwned, decimal currentPrice)
+    public Stock(string name, long sharesOwned, decimal currentPrice)
     {
         Name = name;
         SharesOwned = sharesOwned;
         CurrentPrice = currentPrice;
     }
- 
-    public override decimal NetValue => CurrentPrice * SharesOwned;
+
+    public decimal NetValue => CurrentPrice * SharesOwned;
+
+    public void DisplayInfo(string james)
+    {
+        Console.WriteLine($"Stock Name: {Name}, Shares Owned: {SharesOwned}, Current Price: {CurrentPrice}, Net Value: {NetValue}. Hi my name is {james}");
+    }
 }
 
 class Program
 {
     static void Main(string[] args)
     {
-        Asset asset = new Stock("AAPL", 2, 2);
-        // Stock asset2 = new Stock("GOOGL", 10000L, 200.00m);
-        // Console.WriteLine($"Asset Name: {asset2.Name}, Net Value: {asset2.NetValue}");
-        Console.WriteLine($"Asset Name: {asset.Name}, Net Value: {asset.NetValue}");
+        IAsset asset = new Stock("AAPL", 2, 150.00m);
+        asset.DisplayInfo("John");
     }
 }
