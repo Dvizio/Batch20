@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackExercise", "StackExerc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueExercise", "QueueExercise\QueueExercise.csproj", "{4EEB3D78-5F29-4401-9125-D241E6FE26E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircularQueue", "CircularQueue\CircularQueue.csproj", "{19019883-36A8-4E2B-917A-37CC55F88B29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{4EEB3D78-5F29-4401-9125-D241E6FE26E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EEB3D78-5F29-4401-9125-D241E6FE26E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EEB3D78-5F29-4401-9125-D241E6FE26E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19019883-36A8-4E2B-917A-37CC55F88B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19019883-36A8-4E2B-917A-37CC55F88B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19019883-36A8-4E2B-917A-37CC55F88B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19019883-36A8-4E2B-917A-37CC55F88B29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
