@@ -23,7 +23,7 @@
 // }
 namespace ConsoleApp1;
 
-public abstract class Asset
+public class Asset
 {
     public string Name = string.Empty; // Fixed CS8618 by providing a default value
 
@@ -33,7 +33,7 @@ public abstract class Asset
         Console.WriteLine("im from asset");
     }
 
-    public abstract decimal NetValue { get; }
+    public virtual decimal NetValue { get; }
 }
 
 public class Stock : Asset
@@ -63,9 +63,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        Asset asset = new Stock("AAPL", 20000L, 150.00m);
-        Stock asset2 = new Stock("GOOGL", 10000L, 200.00m);
-        Console.WriteLine($"Asset Name: {asset2.Name}, Net Value: {asset2.NetValue}");
+        Asset asset = new Stock("AAPL", 2, 2);
+        // Stock asset2 = new Stock("GOOGL", 10000L, 200.00m);
+        // Console.WriteLine($"Asset Name: {asset2.Name}, Net Value: {asset2.NetValue}");
         Console.WriteLine($"Asset Name: {asset.Name}, Net Value: {asset.NetValue}");
     }
 }
