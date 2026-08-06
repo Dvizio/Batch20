@@ -48,14 +48,14 @@ namespace ConsoleApp1;
 
 //     public long SharesOwned {get; set;}
 //     public decimal CurrentPrice {get; set;}
-    
+
 //     public Stock(string name,long sharesOwned, decimal currentPrice)
 //     {
 //         Name = name;
 //         SharesOwned = sharesOwned;
 //         CurrentPrice = currentPrice;
 //     }
- 
+
 //     public override decimal NetValue => CurrentPrice * SharesOwned;
 // }
 
@@ -82,19 +82,61 @@ class Stock : IAsset
     public string Name { get; set; }
     public long SharesOwned { get; set; }
     public decimal CurrentPrice { get; set; }
+    private StockType _stockType;
+
+    struct Point
+    {
+        int x = 1;      // Field initializer
+        int y;
+        public Point() => y = 1; // Explicit parameterless constructor
+        private int _z = 1; // Field initializer
+        public int GetZ()
+        {
+            return _z;
+        } // Method to access _z
+    }
+
+    public enum StockType
+    {
+        Common,
+        Preferred,
+        Trash
+    }
+
+    public int GetStockTypeValue()
+    {
+        return (int)_stockType;
+    }
 
     public Stock(string name, long sharesOwned, decimal currentPrice)
     {
         Name = name;
         SharesOwned = sharesOwned;
         CurrentPrice = currentPrice;
+        _stockType = DetermineStockType();
+    }
+
+    private StockType DetermineStockType()
+    {
+        if (CurrentPrice < 10)
+        {
+            return StockType.Trash;
+        }
+        else if (CurrentPrice < 100)
+        {
+            return StockType.Common;
+        }
+        else
+        {
+            return StockType.Preferred;
+        }
     }
 
     public decimal NetValue => CurrentPrice * SharesOwned;
 
     public void DisplayInfo(string james)
     {
-        Console.WriteLine($"Stock Name: {Name}, Shares Owned: {SharesOwned}, Current Price: {CurrentPrice}, Net Value: {NetValue}. Hi my name is {james}");
+        Console.WriteLine($"Stock Name: {Name}, Shares Owned: {SharesOwned}, Current Price: {CurrentPrice}, Net Value: {NetValue}, Stock Type: {_stockType}. Hi my name is {james}");
     }
 }
 
@@ -102,7 +144,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        IAsset asset = new Stock("AAPL", 2, 150.00m);
+        Stock asset = new Stock("AAPL", 200, 1.00m);
         asset.DisplayInfo("John");
+        // asset.GetStockTypeValue();
+        
+        
+        Console.WriteLine(asset.GetStockTypeValue() == 2 ? "LOL DUMBAHH" : "Smart choice boss");
     }
 }
