@@ -149,6 +149,9 @@ class Program
         // asset.GetStockTypeValue();
         
         
-        Console.WriteLine(asset.GetStockTypeValue() == 2 ? "LOL DUMBAHH" : "Smart choice boss");
+        // Console.WriteLine(asset.GetStockTypeValue() == 2 ? "LOL DUMBAHH" : "Smart choice boss");
+        object test = typeof(List<int>);
+        Console.WriteLine(test.ToString());
     }
 }
+
