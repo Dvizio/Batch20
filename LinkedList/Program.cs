@@ -10,7 +10,7 @@ public class Program
     static void Main(string[] args)
     {
         LinkedListActualList linkedList = new LinkedListActualList();
-        string inputs;
+        string? inputs;
         Console.WriteLine("Enter commands Append(item) or Print(), separated by ';' or ',' (Ctrl+C to exit):");
         while ((inputs = Console.ReadLine()) != null)
         {

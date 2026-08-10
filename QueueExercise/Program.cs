@@ -1,5 +1,5 @@
 ﻿Queue<string> queue = new Queue<string>();
-string inputs;
+string? inputs;
 Console.WriteLine("Enter commands Enqueue(item) or Process(), separated by ';' or ',' (Ctrl+C to exit):");
 
 while ((inputs = Console.ReadLine()) != null)

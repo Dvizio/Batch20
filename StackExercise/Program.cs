@@ -1,5 +1,5 @@
 ﻿Stack<string> stack = new Stack<string>();
-string inputs;
+string? inputs;
 Console.WriteLine("Enter commands Type(item) or Undo(), separated by ';' or ',' (Ctrl+C to exit):");
 while ((inputs = Console.ReadLine()) != null)
 {

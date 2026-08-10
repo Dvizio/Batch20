@@ -1,5 +1,5 @@
 ﻿Queue<int> queue = new Queue<int>(3);
-string inputs;
+string? inputs;
 Console.WriteLine("Enter commands Log(val) or Read(), separated by ';' or ',' (Ctrl+C to exit):");
 while ((inputs = Console.ReadLine()) != null)
 {
