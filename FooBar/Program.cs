@@ -52,4 +52,8 @@ while ((inputs = Console.ReadLine()) != null)
         }
         Console.WriteLine(string.Join(", ", results));
     }
+    else
+    {
+        Console.WriteLine("INTEGER ONLY!");
+    }
 }
