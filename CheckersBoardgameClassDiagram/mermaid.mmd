@@ -36,8 +36,7 @@ classDiagram
     <<interface>>
     +Color: PieceColor
     +Position: Position
-    +IsKing: bool
-    +GetValidMoves(board: Board) List
+    +GetValidMoves(board: Board) List~Move~
     +Move(destination: Position) void
   }
 
@@ -45,11 +44,9 @@ classDiagram
   class Pawn {
     -color: PieceColor
     -position: Position
-    -isKing: bool
     +Color: PieceColor
     +Position: Position
-    +IsKing: bool
-    +GetValidMoves(board: Board) List
+    +GetValidMoves(board: Board) List~Move~
     +Move(destination: Position) void
     +PromoteToKing() void
   }
@@ -57,11 +54,9 @@ classDiagram
   class King {
     -color: PieceColor
     -position: Position
-    -isKing: bool
     +Color: PieceColor
     +Position: Position
-    +IsKing: bool
-    +GetValidMoves(board: Board) List
+    +GetValidMoves(board: Board) List~Move~
     +Move(destination: Position) void
   }
 
@@ -104,8 +99,9 @@ classDiagram
     -pieces: List~ICheckerPiece~
     +Name: string
     +Color: PieceColor
-    +MakeMove(move: Move) void
     +GetPieces() List~ICheckerPiece~
+    +GetValidMoves(board: Board) List~Move~
+    +HasValidMoves(board: Board) bool
   }
 
   %% Game
@@ -118,8 +114,8 @@ classDiagram
     +Players: List~Player~
     +CurrentPlayer: Player
     +Status: GameStatus
-    +MoveMade: Action~Move~
-    +GameOver: Action~Player~
+    +MoveMade: Event Action~Move~
+    +GameOver: Event Action~Player~
     +StartGame() void
     +MakeMove(move: Move) void
     +SwitchTurn() void
