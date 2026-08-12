@@ -24,6 +24,7 @@ classDiagram
 
   %% Position Value Object
   class Position {
+    <<struct>>
     -row: int
     -column: int
     +Row: int
@@ -43,7 +44,6 @@ classDiagram
   class Piece {
     -color: PieceColor
     -position: Position
-    -isKing: bool
     +Color: PieceColor
     +Position: Position
     +IsKing: bool
@@ -109,7 +109,6 @@ classDiagram
     +Name: string
     +Color: PieceColor
     +GetPieces() List~ICheckerPiece~
-    +GetValidMoves(board: Board, rules: RuleSet) List~Move~
     +HasValidMoves(board: Board, rules: RuleSet) bool
   }
 
