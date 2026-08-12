@@ -21,6 +21,7 @@ while ((inputs = Console.ReadLine()) != null)
     }
 }
 
+
 static void QueueManager(Queue<int> queue, string input)
 {
     if (input.Contains("Log("))
@@ -33,11 +34,20 @@ static void QueueManager(Queue<int> queue, string input)
             Console.WriteLine("Invalid input. Please enter a valid integer.");
             return;
         }
-        queue.Enqueue(value);
+        if (queue.Count < 3)
+        {
+            Console.WriteLine($"Logged {value}");
+            queue.Enqueue(value);
+        }
+        else
+        {
+            Console.WriteLine("Buffer Full");
+        }
+
     }
     else if (input.Contains("Read()"))
     {
-        if (queue.Count() == 0)
+        if (!(queue.Count() == 0))
         {
             Console.WriteLine($"Read {queue.Dequeue()}");
         }
@@ -47,7 +57,6 @@ static void QueueManager(Queue<int> queue, string input)
         }
     }
 }
-
 
 
 // CircularQueue queue = new CircularQueue();
