@@ -1,0 +1,172 @@
+```mermaid
+
+---
+config:
+  layout: elk
+---
+classDiagram
+  direction TB
+
+  %% Enumerations
+  class PieceColor {
+    <<enumeration>>
+    RED
+    BLACK
+  }
+
+  class GameStatus {
+    <<enumeration>>
+    NOT_STARTED
+    IN_PROGRESS
+    RED_WINS
+    BLACK_WINS
+    DRAW
+  }
+
+  %% Position Value Object
+  class Position {
+    -row: int
+    -column: int
+    +Row: int
+    +Column: int
+  }
+
+  %% Core Interface
+  class ICheckerPiece {
+    <<interface>>
+    +Color: PieceColor
+    +Position: Position
+    +IsKing: bool
+    +GetValidMoves(board: Board) List
+    +Move(destination: Position) void
+  }
+
+  %% Piece Implementations
+  class Pawn {
+    -color: PieceColor
+    -position: Position
+    -isKing: bool
+    +Color: PieceColor
+    +Position: Position
+    +IsKing: bool
+    +GetValidMoves(board: Board) List
+    +Move(destination: Position) void
+    +PromoteToKing() void
+  }
+
+  class King {
+    -color: PieceColor
+    -position: Position
+    -isKing: bool
+    +Color: PieceColor
+    +Position: Position
+    +IsKing: bool
+    +GetValidMoves(board: Board) List
+    +Move(destination: Position) void
+  }
+
+  %% Board and Square
+  class Square {
+    -position: Position
+    -piece: ICheckerPiece
+    +Position: Position
+    +Piece: ICheckerPiece
+    +IsEmpty() bool
+    +PlacePiece(piece: ICheckerPiece) void
+    +RemovePiece() ICheckerPiece
+  }
+
+  class Board {
+    -squares: Square[8,8]
+    +Squares: Square[8,8]
+    +GetSquare(position: Position) Square
+    +IsValidMove(move: Move) bool
+    +MovePiece(move: Move) void
+    +RemovePiece(position: Position) void
+  }
+
+  %% Move
+  class Move {
+    -from: Position
+    -to: Position
+    -capturedPiece: ICheckerPiece
+    +From: Position
+    +To: Position
+    +CapturedPiece: ICheckerPiece
+    +IsCapture() bool
+    +Execute(board: Board) void
+  }
+
+  %% Player
+  class Player {
+    -name: string
+    -color: PieceColor
+    -pieces: List~ICheckerPiece~
+    +Name: string
+    +Color: PieceColor
+    +MakeMove(move: Move) void
+    +GetPieces() List~ICheckerPiece~
+  }
+
+  %% Game
+  class Game {
+    -board: Board
+    -players: List~Player~
+    -currentPlayer: Player
+    -status: GameStatus
+    +Board: Board
+    +Players: List~Player~
+    +CurrentPlayer: Player
+    +Status: GameStatus
+    +MoveMade: Action~Move~
+    +GameOver: Action~Player~
+    +StartGame() void
+    +MakeMove(move: Move) void
+    +SwitchTurn() void
+    +CheckGameOver() bool
+    +Restart() void
+  }
+
+  %% Relationships
+
+  %% Interface Implementation
+  Pawn ..|> ICheckerPiece
+  King ..|> ICheckerPiece
+
+  %% Composition: Game owns Board
+  Game *-- Board : composes
+
+  %% Composition: Board owns 64 Squares
+  Board *-- Square : composes 64
+
+  %% Association: Square contains zero or one piece
+  Square o-- ICheckerPiece : contains 0..1
+
+  %% Composition: Game owns Players
+  Game *-- Player : composes 2
+
+  %% Association: Player has multiple pieces
+  Player --> ICheckerPiece : manages 0..*
+
+  %% Association: Move references positions
+  Move --> Position : from 1
+  Move --> Position : to 1
+
+  %% Association: Move may capture a piece
+  Move --> ICheckerPiece : captures 0..1
+
+  %% Dependency: Game uses Move
+  Game --> Move : creates/uses
+
+  %% Value Object: Position used throughout
+  Square --> Position : locates
+  ICheckerPiece --> Position : occupies
+  Move --> Position : references
+
+  %% Enumerations used
+  ICheckerPiece --> PieceColor : has
+  Player --> PieceColor : has
+  Game --> GameStatus : tracks
+  Game --> PieceColor : uses
+
+  ```
