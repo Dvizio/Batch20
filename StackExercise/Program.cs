@@ -87,6 +87,7 @@ static void StackManager(ref Stack<string> stack, string input)
             }
             newStack.Push(item);
             Console.WriteLine($"Dropped bottom, Typed {item}");
+            stack.Clear();
             stack = newStack;
         }
 
