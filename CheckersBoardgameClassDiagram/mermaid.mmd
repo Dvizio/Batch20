@@ -1,5 +1,4 @@
 ```mermaid
-
 ---
 config:
   layout: elk
@@ -36,28 +35,19 @@ classDiagram
     <<interface>>
     +Color: PieceColor
     +Position: Position
-    +GetValidMoves(board: Board) List~Move~
-    +Move(destination: Position) void
+    +IsKing: bool
+    +GetValidMoves(board: Board, rules: RuleSet) List~Move~
   }
 
-  %% Piece Implementations
-  class Pawn {
+  %% Single Piece implementation (was Pawn/King split)
+  class Piece {
     -color: PieceColor
     -position: Position
+    -isKing: bool
     +Color: PieceColor
     +Position: Position
-    +GetValidMoves(board: Board) List~Move~
-    +Move(destination: Position) void
-    +PromoteToKing() void
-  }
-
-  class King {
-    -color: PieceColor
-    -position: Position
-    +Color: PieceColor
-    +Position: Position
-    +GetValidMoves(board: Board) List~Move~
-    +Move(destination: Position) void
+    +IsKing: bool
+    +GetValidMoves(board: Board, rules: RuleSet) List~Move~
   }
 
   %% Board and Square
@@ -75,21 +65,40 @@ classDiagram
     -squares: Square[8,8]
     +Squares: Square[8,8]
     +GetSquare(position: Position) Square
-    +IsValidMove(move: Move) bool
+    +IsValidMove(move: Move, rules: RuleSet) bool
     +MovePiece(move: Move) void
     +RemovePiece(position: Position) void
+    +PromotePiece(position: Position) void
   }
 
-  %% Move
+  %% Move as pure data/intent - no Execute()
   class Move {
     -from: Position
     -to: Position
-    -capturedPiece: ICheckerPiece
+    -capturedPieces: List~ICheckerPiece~
+    -path: List~Position~
     +From: Position
     +To: Position
-    +CapturedPiece: ICheckerPiece
+    +CapturedPieces: List~ICheckerPiece~
+    +Path: List~Position~
     +IsCapture() bool
-    +Execute(board: Board) void
+    +IsChainCapture() bool
+  }
+
+  %% Rules extracted so Board isn't hardcoded to one variant
+  class RuleSet {
+    <<interface>>
+    +ForcedCapture: bool
+    +FlyingKings: bool
+    +GetLegalMoves(piece: ICheckerPiece, board: Board) List~Move~
+    +FilterForcedCaptures(moves: List~Move~) List~Move~
+  }
+
+  class StandardRuleSet {
+    +ForcedCapture: bool
+    +FlyingKings: bool
+    +GetLegalMoves(piece: ICheckerPiece, board: Board) List~Move~
+    +FilterForcedCaptures(moves: List~Move~) List~Move~
   }
 
   %% Player
@@ -100,8 +109,8 @@ classDiagram
     +Name: string
     +Color: PieceColor
     +GetPieces() List~ICheckerPiece~
-    +GetValidMoves(board: Board) List~Move~
-    +HasValidMoves(board: Board) bool
+    +GetValidMoves(board: Board, rules: RuleSet) List~Move~
+    +HasValidMoves(board: Board, rules: RuleSet) bool
   }
 
   %% Game
@@ -110,10 +119,12 @@ classDiagram
     -players: List~Player~
     -currentPlayer: Player
     -status: GameStatus
+    -rules: RuleSet
     +Board: Board
     +Players: List~Player~
     +CurrentPlayer: Player
     +Status: GameStatus
+    +Rules: RuleSet
     +MoveMade: Event Action~Move~
     +GameOver: Event Action~Player~
     +StartGame() void
@@ -126,8 +137,8 @@ classDiagram
   %% Relationships
 
   %% Interface Implementation
-  Pawn ..|> ICheckerPiece
-  King ..|> ICheckerPiece
+  Piece ..|> ICheckerPiece
+  StandardRuleSet ..|> RuleSet
 
   %% Composition: Game owns Board
   Game *-- Board : composes
@@ -135,7 +146,7 @@ classDiagram
   %% Composition: Board owns 64 Squares
   Board *-- Square : composes 64
 
-  %% Association: Square contains zero or one piece
+  %% Association: Square is the single source of truth for piece location
   Square o-- ICheckerPiece : contains 0..1
 
   %% Composition: Game owns Players
@@ -147,22 +158,27 @@ classDiagram
   %% Association: Move references positions
   Move --> Position : from 1
   Move --> Position : to 1
+  Move --> Position : path 0..*
 
-  %% Association: Move may capture a piece
-  Move --> ICheckerPiece : captures 0..1
+  %% Association: Move may capture pieces (chain capture support)
+  Move --> ICheckerPiece : captures 0..*
 
-  %% Dependency: Game uses Move
-  Game --> Move : creates/uses
+  %% Dependency: Game uses Move; Board is the sole mutator
+  Game --> Move : creates
+  Game --> Board : delegates MovePiece
+
+  %% Rules are pluggable and used by both Board and Player
+  Game *-- RuleSet : composes
+  Board --> RuleSet : validates against
+  Player --> RuleSet : queries
 
   %% Value Object: Position used throughout
   Square --> Position : locates
   ICheckerPiece --> Position : occupies
-  Move --> Position : references
 
   %% Enumerations used
   ICheckerPiece --> PieceColor : has
   Player --> PieceColor : has
   Game --> GameStatus : tracks
   Game --> PieceColor : uses
-
-  ```
+```
