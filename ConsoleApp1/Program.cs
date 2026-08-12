@@ -144,14 +144,24 @@ class Program
 {
     static void Main(string[] args)
     {
-        Stock asset = new Stock("AAPL", 200, 1.00m);
-        asset.DisplayInfo("John");
-        // asset.GetStockTypeValue();
-        
-        
-        // Console.WriteLine(asset.GetStockTypeValue() == 2 ? "LOL DUMBAHH" : "Smart choice boss");
-        object test = typeof(List<int>);
-        Console.WriteLine(test.ToString());
+        // Stock asset = new Stock("AAPL", 200, 1.00m);
+        // asset.DisplayInfo("John");
+        // // asset.GetStockTypeValue();
+
+
+        // // Console.WriteLine(asset.GetStockTypeValue() == 2 ? "LOL DUMBAHH" : "Smart choice boss");
+        // object test = typeof(List<int>);
+        // Console.WriteLine(test.ToString());
+
+        int[] numbers = { 3, 2, 1 };
+        string[] words = { "three", "two", "one" };
+        Array.Sort(numbers, words);
+
+        for(int i = 0; i < numbers.Length ; i++)
+        {
+            Console.Write(numbers[i] +  " ");
+            Console.Write(words[i] + "  ");
+        }
     }
 }
 

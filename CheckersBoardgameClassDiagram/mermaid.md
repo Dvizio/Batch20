@@ -1,5 +1,8 @@
 ```mermaid
-
+---
+config:
+  layout: elk
+---
 classDiagram
   direction TB
 
