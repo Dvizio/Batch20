@@ -15,10 +15,12 @@ public class LinkedListActualList
         if (_head == null)
         {
             _head = newNode;
+            _head.Previous = null;
             _tail = newNode;
         }
         else
         {
+            newNode.Previous = _tail;
             _tail.Next = newNode;
             _tail = newNode;
         }
