@@ -27,15 +27,13 @@ classDiagram
 
   %% Single Piece class (no interface - only one piece type exists)
   class Piece {
-    +bool isKing
-    +PieceColor Color
-    +Position position
-    +PromoteKing() : void
+    +bool isKing : readonly
+    +PieceColor Color : readonly
+    +PromoteKing() void
   }
 
   %% Board and Square
   class Square {
-    +Position position
     +Piece? piece
     +IsEmpty() bool
     +PlacePiece(Piece piece) void
@@ -43,7 +41,8 @@ classDiagram
 
   class Board {
     +Square[8,8] square
-    +GetSquare(position: Position) Square
+    +GetSquare(Position position) : Square
+    +GetPiece(PieceColor color) : int
   }
 
   %% Move as pure data/intent - no Execute()
@@ -66,14 +65,12 @@ classDiagram
     +bool ForcedCapture
     +bool FlyingKings
     +GetLegalMoves(piece: Piece, board: Board) List~Move~
-    +FilterForcedCaptures(moves: List~Move~) List~Move~
   }
 
   class StandardRuleSet {
     +bool ForcedCapture
     +bool FlyingKings
     +GetLegalMoves(piece: Piece, board: Board) List~Move~
-    +FilterForcedCaptures(moves: List~Move~) List~Move~
   }
 
   %% Player
@@ -96,10 +93,11 @@ classDiagram
     +MoveMade: Event Action~Move~
     +GameOver: Event Action~Player~
     +GetRuleSet() RuleSet
-    +StartGame(RuleSet) void
-    +MakeMove(Player player, Piece piece, RuleSet rules) void
+    +StartGame(RuleSet, Player one, Player two) void
+    +MakeMove(Position from, Position to) void
     +SwitchTurn() Player
     +CheckGameOver() bool
+    +GetValidMove(Piece piece) List~Move~
     +Restart() void
   }
 
@@ -133,12 +131,10 @@ classDiagram
 
   %% Dependency: Game uses Move; Board is the sole mutator
   Game --> Move : creates
-  Game --> Board : delegates MovePiece
+  Game --> Board : delegates MakeMove
 
   %% Rules are pluggable and used by both Board and Player
   Game *-- RuleSet : composes
-  Board --> RuleSet : validates against
-  Player --> RuleSet : queries
 
   %% Value Object: Position used throughout
   Square --> Position : locates
