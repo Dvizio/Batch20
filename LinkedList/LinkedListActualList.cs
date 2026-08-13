@@ -3,8 +3,8 @@ namespace LinkedListExercise;
 
 public class LinkedListActualList
 {
-    private Node _head = null;
-    private Node _tail = null;
+    private Node? _head = null;
+    private Node? _tail = null;
 
     public void Clear()
     {
@@ -27,7 +27,7 @@ public class LinkedListActualList
         else
         {
             newNode.Previous = _tail;
-            _tail.Next = newNode;
+            _tail!.Next = newNode;
             _tail = newNode;
             _tail.Next = null;
         }
@@ -41,7 +41,7 @@ public class LinkedListActualList
             return;
         }
 
-        Node currentNode = _head;
+        Node? currentNode = _head;
         Console.Write($"Sequence {currentNode.Value}");
         currentNode = currentNode.Next;
 
@@ -55,13 +55,13 @@ public class LinkedListActualList
     
     public void PrintReverse()
     {
-        if (_head == null)
+        if (_tail == null)
         {
             Console.WriteLine("The linked list is empty.");
             return;
         }
 
-        Node currentNode = _tail;
+        Node? currentNode = _tail;
         Console.Write($"Reversed {currentNode.Value}");
         currentNode = currentNode.Previous;
 
