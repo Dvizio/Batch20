@@ -11,7 +11,7 @@ public class Program
     {
         LinkedListActualList linkedList = new LinkedListActualList();
         string? inputs;
-        Console.WriteLine("Enter commands Append(item) or Print(), separated by ';' or ',' (Ctrl+C to exit):");
+        Console.WriteLine("Enter commands Append(item), Print(), PrintReverse(), or Clear(), separated by ';' or ',' (Ctrl+C to exit):");
         while ((inputs = Console.ReadLine()) != null)
         {
             if (inputs.Contains(";"))
@@ -47,9 +47,16 @@ public class Program
                 Console.WriteLine("Invalid input format. Please enter a valid integer.");
             }
         }
+        else if (input.Contains("PrintReverse"))
+        {
+            linkedList.PrintReverse(); return;
+        }
         else if (input.Contains("Print"))
         {
-            linkedList.Print();
+            linkedList.Print(); return;
+        } else if (input.Contains("Clear"))
+        {
+            linkedList.Clear();return;
         }
     }
 }

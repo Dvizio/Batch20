@@ -6,6 +6,12 @@ public class LinkedListActualList
     private Node _head = null;
     private Node _tail = null;
 
+    public void Clear()
+    {
+        _head = null;
+        _tail = null;
+    }
+
     public void Append(int value)
     {
         Node newNode = new Node()
@@ -23,6 +29,7 @@ public class LinkedListActualList
             newNode.Previous = _tail;
             _tail.Next = newNode;
             _tail = newNode;
+            _tail.Next = null;
         }
     }
 
@@ -44,5 +51,26 @@ public class LinkedListActualList
             currentNode = currentNode.Next;
         }
         Console.WriteLine();
+    }
+    
+    public void PrintReverse()
+    {
+        if (_head == null)
+        {
+            Console.WriteLine("The linked list is empty.");
+            return;
+        }
+
+        Node currentNode = _tail;
+        Console.Write($"Reversed {currentNode.Value}");
+        currentNode = currentNode.Previous;
+
+        while (currentNode != null)
+        {
+            Console.Write($" -> {currentNode.Value}");
+            currentNode = currentNode.Previous;
+        }
+        Console.WriteLine();
+
     }
 }
