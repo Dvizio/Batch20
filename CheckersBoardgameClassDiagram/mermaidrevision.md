@@ -64,7 +64,8 @@ classDiagram
     <<interface>>
     +bool ForcedCapture
     +bool FlyingKings
-    +GetLegalMoves(piece: Piece, board: Board) List~Move~
+    +GetLegalMoves(Piece piece, Board board) List~Move~
+    +FilterChaining(Board board, Player player) 
   }
 
   class StandardRuleSet {

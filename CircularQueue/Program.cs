@@ -1,4 +1,66 @@
-﻿Queue<int> queue = new Queue<int>(3);
+﻿/* Week 1 */
+// Queue<int> queue = new Queue<int>(3);
+// string? inputs;
+// Console.WriteLine("Enter commands Log(val) or Read(), separated by ';' or ',' (Ctrl+C to exit):");
+// while ((inputs = Console.ReadLine()) != null)
+// {
+//     if (inputs.Contains(";"))
+//     {
+//         string[] inputsArray = inputs.Split(';');
+//         foreach (string input in inputsArray)
+//         {
+//             QueueManager(queue, input);
+//         }
+//     }
+//     else
+//     {
+//         string[] inputArray = inputs.Split(',');
+//         foreach (string input in inputArray)
+//         {
+//             QueueManager(queue, input);
+//         }
+//     }
+// }
+
+
+// static void QueueManager(Queue<int> queue, string input)
+// {
+//     if (input.Contains("Log("))
+//     {
+//         string item = input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1);
+//         int value;
+//         bool isNumeric = int.TryParse(item, out value);
+//         if (!isNumeric)
+//         {
+//             Console.WriteLine("Invalid input. Please enter a valid integer.");
+//             return;
+//         }
+//         if (queue.Count < 3)
+//         {
+//             Console.WriteLine($"Logged {value}");
+//             queue.Enqueue(value);
+//         }
+//         else
+//         {
+//             Console.WriteLine("Buffer Full");
+//         }
+
+//     }
+//     else if (input.Contains("Read()"))
+//     {
+//         if (!(queue.Count() == 0))
+//         {
+//             Console.WriteLine($"Read {queue.Dequeue()}");
+//         }
+//         else
+//         {
+//             Console.WriteLine("Buffer is empty");
+//         }
+//     }
+// }
+
+/* Week 2 */
+Queue<int> queue = new Queue<int>(3);
 string? inputs;
 Console.WriteLine("Enter commands Log(val) or Read(), separated by ';' or ',' (Ctrl+C to exit):");
 while ((inputs = Console.ReadLine()) != null)
@@ -41,7 +103,9 @@ static void QueueManager(Queue<int> queue, string input)
         }
         else
         {
-            Console.WriteLine("Buffer Full");
+            queue.Dequeue();
+            Console.WriteLine($"Overwritten oldest with {value}");
+            queue.Enqueue(value);
         }
 
     }
