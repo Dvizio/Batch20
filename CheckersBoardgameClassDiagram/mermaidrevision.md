@@ -43,14 +43,11 @@ classDiagram
     +Square[8,8] square
     +GetSquare(Position position) : Square
     +GetPiece(PieceColor color) : int
+    OnMoveListener(Move) : void
   }
 
   %% Move as pure data/intent - no Execute()
   class Move {
-    -from: Position
-    -to: Position
-    -capturedPieces: List~Piece~
-    -path: List~Position~
     +From: Position
     +To: Position
     +CapturedPieces: List~Piece~
@@ -59,53 +56,39 @@ classDiagram
     +IsChainCapture() bool
   }
 
-  %% Rules extracted so Board isn't hardcoded to one variant
-  class RuleSet {
-    <<interface>>
-    +bool ForcedCapture
-    +bool FlyingKings
-    +GetLegalMoves(Piece piece, Board board) List~Move~
-    +FilterChaining(Board board, Player player) 
-  }
-
-  class StandardRuleSet {
-    +bool ForcedCapture
-    +bool FlyingKings
-    +GetLegalMoves(piece: Piece, board: Board) List~Move~
-  }
-
   %% Player
   class Player {
-    -List~Piece~ pieces
+    -int _pieces
     +PieceColor Color
     +string Name
-    +GetPieces() List~Piece~
+    +GetTotalPiece() int
   }
 
   %% Game
   class Game {
-    -List~Player~ player
-    -Player currentPlayer
-    -RuleSet rules
-    +Board board 
-    +GameStatus status
+    -List~Player~ _player
+    -Player _currentPlayer
+    -string _rules
+    -bool _flyingKing
+    -bool _forceCapture
+    -Board _board
+    -GameStatus _status
     +CurrentPlayer: Player
     +Status: GameStatus
     +MoveMade: Event Action~Move~
     +GameOver: Event Action~Player~
-    +GetRuleSet() RuleSet
-    +StartGame(RuleSet, Player one, Player two) void
-    +MakeMove(Position from, Position to) void
+    +GetRuleSet() string
+    +StartGame(string rules, Player one, Player two, bool flyingKing, bool forceCapture) void
+    +MakeMove(Move move) void
     +SwitchTurn() Player
-    +CheckGameOver() bool
-    +GetValidMove(Piece piece) List~Move~
+    +GetBoardState() Board
+    +CheckGameStatus() GameStatus
+    +GetValidMove(Square square) List~Move~
     +Restart() void
   }
 
   %% Relationships
 
-  %% Interface Implementation
-  StandardRuleSet ..|> RuleSet
 
   %% Composition: Game owns Board
   Game *-- Board : composes
@@ -134,8 +117,6 @@ classDiagram
   Game --> Move : creates
   Game --> Board : delegates MakeMove
 
-  %% Rules are pluggable and used by both Board and Player
-  Game *-- RuleSet : composes
 
   %% Value Object: Position used throughout
   Square --> Position : locates
