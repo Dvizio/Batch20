@@ -83,7 +83,7 @@ classDiagram
     +SwitchTurn() Player
     +GetBoardState() Board
     +CheckGameStatus() GameStatus
-    +GetValidMove(Square square) List~Move~
+    +GetValidMove(Position position) List~Move~
     +Restart() void
   }
 
