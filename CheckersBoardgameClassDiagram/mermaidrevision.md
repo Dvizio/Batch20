@@ -21,26 +21,26 @@ classDiagram
   %% Position Value Object
   class Position {
     <<struct>>
-    +int row
-    +int column
+    +int Row
+    +int Column
   }
 
   %% Single Piece class (no interface - only one piece type exists)
   class Piece {
-    +bool isKing : readonly
+    +bool IsKing : readonly
     +PieceColor Color : readonly
     +PromoteKing() void
   }
 
   %% Board and Square
   class Square {
-    +Piece? piece
+    +Piece? Piece
     +IsEmpty() bool
     +PlacePiece(Piece piece) void
   }
 
   class Board {
-    +Square[8,8] square
+    +Square[8,8] Square
     +GetSquare(Position position) : Square
     +GetPiece(PieceColor color) : int
     OnMoveListener(Move) : void
@@ -48,10 +48,10 @@ classDiagram
 
   %% Move as pure data/intent - no Execute()
   class Move {
-    +From: Position
-    +To: Position
-    +CapturedPieces: List~Piece~
-    +Path: List~Position~
+    +Position From
+    +Position To
+    +List~Piece~ CapturedPieces
+    +List~Position~ Path
     +IsCapture() bool
     +IsChainCapture() bool
   }
@@ -61,7 +61,6 @@ classDiagram
     -int _pieces
     +PieceColor Color
     +string Name
-    +GetTotalPiece() int
   }
 
   %% Game
