@@ -29,60 +29,59 @@ classDiagram
   class Piece {
     +bool IsKing : readonly
     +PieceColor Color : readonly
-    +PromoteKing() void
+    +Piece(PieceColor color, bool isKing)
   }
 
   %% Board and Square
   class Square {
     +Piece? Piece
-    +IsEmpty() bool
-    +PlacePiece(Piece piece) void
+    +Square()
   }
 
   class Board {
     +Square[8,8] Square
-    +GetSquare(Position position) : Square
-    +GetPiece(PieceColor color) : int
     OnMoveListener(Move) : void
+    +Board()
   }
 
   %% Move as pure data/intent - no Execute()
   class Move {
+    <<struct>>
     +Position From
     +Position To
-    +List~Piece~ CapturedPieces
+    +List~Position~ CapturedPieces
     +List~Position~ Path
-    +IsCapture() bool
-    +IsChainCapture() bool
   }
 
   %% Player
   class Player {
-    -int _pieces
     +PieceColor Color
     +string Name
+    +Player(string Name, PieceColor Color)
   }
 
   %% Game
   class Game {
-    -List~Player~ _player
+    -List~Player~ _player readonly
     -Player _currentPlayer
-    -string _rules
-    -bool _flyingKing
-    -bool _forceCapture
+    -string _rules readonly
+    -bool _flyingKing readonly
+    -bool _forceCapture readonly
     -Board _board
     -GameStatus _status
-    +CurrentPlayer: Player
-    +Status: GameStatus
     +MoveMade: Event Action~Move~
     +GameOver: Event Action~Player~
+    +Game(Player player, Player player, Board board)
     +GetRuleSet() string
-    +StartGame(string rules, Player one, Player two, bool flyingKing, bool forceCapture) void
+    +StartGame(string rules, bool flyingKing, bool forceCapture) void
     +MakeMove(Move move) void
     +SwitchTurn() Player
+    +GetAllPlayer() List~Player~
     +GetBoardState() Board
     +CheckGameStatus() GameStatus
+    +GetCurrentPlayer() Player
     +GetValidMove(Position position) List~Move~
+    +GetTotalPiece(PieceColor color) int
     +Restart() void
   }
 
@@ -119,7 +118,6 @@ classDiagram
 
   %% Value Object: Position used throughout
   Square --> Position : locates
-  Piece --> Position : occupies
 
   %% Enumerations used
   Piece --> PieceColor : has
