@@ -146,4 +146,10 @@ classDiagram
   Player --> PieceColor : has
   Game --> GameStatus : tracks
   Game --> PieceColor : uses
+
+  %% Interface used
+  IPiece --> Piece : implement
+  IPlayer --> Player : implement
+  ISquare --> Square : implement
+  IBoard --> Board : implement
 ```
