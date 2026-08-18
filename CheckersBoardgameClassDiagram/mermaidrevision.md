@@ -25,6 +25,30 @@ classDiagram
     +int Column
   }
 
+  %% Interfaces
+  class IPiece {
+    <<interface>>
+    +bool IsKing : readonly
+    +PieceColor Color : readonly
+  }
+
+  class ISquare {
+    <<interface>>
+    +IPiece? Piece
+  }
+
+  class IBoard {
+    <<interface>>
+    +ISquare[8,8] Square
+    OnMoveListener(Move) : void
+  }
+
+  class IPlayer {
+    <<interface>>
+    +PieceColor Color
+    +string Name
+  }
+
   %% Single Piece class (no interface - only one piece type exists)
   class Piece {
     +bool IsKing : readonly
@@ -43,6 +67,7 @@ classDiagram
     OnMoveListener(Move) : void
     +Board()
   }
+
 
   %% Move as pure data/intent - no Execute()
   class Move {
@@ -107,9 +132,6 @@ classDiagram
   Move --> Position : from 1
   Move --> Position : to 1
   Move --> Position : path 0..*
-
-  %% Association: Move may capture pieces (chain capture support)
-  Move --> Piece : captures 0..*
 
   %% Dependency: Game uses Move; Board is the sole mutator
   Game --> Move : creates
