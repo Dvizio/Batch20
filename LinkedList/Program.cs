@@ -11,7 +11,7 @@ public class Program
     {
         LinkedListActualList linkedList = new LinkedListActualList();
         string? inputs;
-        Console.WriteLine("Enter commands Append(item), Print(), PrintReverse(), or Clear(), separated by ';' or ',' (Ctrl+C to exit):");
+        Console.WriteLine("Enter commands Append(item), Insert(item), Print(), PrintReverse(), or Clear(), separated by ';' or ',' (Ctrl+C to exit):");
         while ((inputs = Console.ReadLine()) != null)
         {
             if (inputs.Contains(";"))
@@ -41,6 +41,19 @@ public class Program
                 int item = int.Parse(input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1));
                 linkedList.Append(item);
                 Console.WriteLine($"Appended {item}");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid input format. Please enter a valid integer.");
+            }
+        }
+        else  if (input.Contains("Insert("))
+        {
+            try
+            {
+                int item = int.Parse(input.Substring(input.IndexOf('(') + 1, input.IndexOf(')') - input.IndexOf('(') - 1));
+                linkedList.Insert(item);
+                Console.WriteLine($"Inserted {item}");
             }
             catch (FormatException)
             {
