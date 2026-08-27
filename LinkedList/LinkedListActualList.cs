@@ -5,42 +5,29 @@ public class LinkedListActualList
 {
     private Node? _head = null;
     private Node? _tail = null;
+    private Func<int, int, int>? _comparer = null;
+    private readonly List<Func<int, bool>> _filters = new();
 
     public void Clear()
     {
         _head = null;
         _tail = null;
+        _comparer = null;
+        _filters.Clear();
+    }
+    public void SetSorting(Func<int, int, int> comparer)
+    {
+        _comparer = comparer;
+    }
+
+    public void AddFilter(Func<int, bool> filterRule)
+    {
+        _filters.Add(filterRule);
     }
 
     public void Append(int value)
     {
-        // Console.WriteLine($"trying to append {value}");
-        Node newNode = new Node()
-        {
-            Value = value
-        };
-        if (_head == null)
-        {
-            _head = newNode;
-            _head.Previous = null;
-            _tail = newNode;
-        }
-        else
-        {
-            newNode.Previous = _tail;
-            _tail!.Next = newNode;
-            _tail = newNode;
-            _tail.Next = null;
-        }
-    }
-
-    public void Insert(int value)
-    {
-        Node newNode = new Node
-        {
-            Value = value
-        };
-
+        Node newNode = new Node { Value = value };
         if (_head == null)
         {
             _head = newNode;
@@ -48,23 +35,28 @@ public class LinkedListActualList
             return;
         }
 
-        Node cursor = _head;
-
-        if (value < cursor.Value)
+        if (_comparer == null)
         {
-            Console.WriteLine("HERE");
+            newNode.Previous = _tail;
+            _tail!.Next = newNode;
+            _tail = newNode;
+            return;
+        }
+
+        if (_comparer(value, _head.Value) < 0)
+        {
             newNode.Next = _head;
             _head.Previous = newNode;
             _head = newNode;
             return;
         }
 
-        while (cursor.Next != null && value >= cursor.Next.Value)
+        Node cursor = _head;
+        while (cursor.Next != null && _comparer(value, cursor.Next.Value) >= 0)
         {
             cursor = cursor.Next;
         }
 
-        // Console.WriteLine($"input after {cursor.Value}");
         newNode.Next = cursor.Next;
         newNode.Previous = cursor;
 
@@ -75,51 +67,71 @@ public class LinkedListActualList
         else
         {
             _tail = newNode;
-            Console.WriteLine("here");
         }
 
         cursor.Next = newNode;
     }
 
 
-    public void Print()
+    public string? Print()
     {
         if (_head == null)
         {
-            Console.WriteLine("The linked list is empty.");
-            return;
+            return null;
         }
 
         Node? currentNode = _head;
-        Console.Write($"Sequence: {currentNode.Value}");
-        currentNode = currentNode.Next;
+        List<int> outputValues = new();
 
         while (currentNode != null)
         {
-            Console.Write($" -> {currentNode.Value}");
+            if (ShouldInclude(currentNode.Value))
+            {
+                outputValues.Add(currentNode.Value);
+            }
             currentNode = currentNode.Next;
         }
-        Console.WriteLine();
-    }
 
-    public void PrintReverse()
+        if (outputValues.Count == 0)
+        {
+            return null;
+        }
+        return string.Join(" -> ", outputValues);
+    }
+    public string? PrintReverse()
     {
         if (_tail == null)
         {
-            Console.WriteLine("The linked list is empty.");
-            return;
+            return null;
         }
 
         Node? currentNode = _tail;
-        Console.Write($"Reversed: {currentNode.Value}");
-        currentNode = currentNode.Previous;
+        List<int> outputValues = new();
 
         while (currentNode != null)
         {
-            Console.Write($" -> {currentNode.Value}");
+            if (ShouldInclude(currentNode.Value))
+            {
+                outputValues.Add(currentNode.Value);
+            }
             currentNode = currentNode.Previous;
         }
-        Console.WriteLine();
+        if (outputValues.Count == 0)
+        {
+            return null;
+        }
+        return string.Join(" -> ", outputValues);
 
+    }
+    private bool ShouldInclude(int value)
+    {
+        foreach (var filter in _filters)
+        {
+            if (!filter(value))
+            {
+                return false; // Skip if any filter returns false
+            }
+        }
+        return true;
     }
 }
